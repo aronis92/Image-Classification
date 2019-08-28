@@ -39,7 +39,7 @@ def show_img(img):
     img = Image.fromarray(img)
     display(img)
 
-images, labels = load_dataset()
+#images, labels = load_dataset()
 
 
 
