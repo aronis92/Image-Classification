@@ -98,9 +98,9 @@ def equalize_classes():
             new_img = Image.fromarray(new_img)
             new_img.save(image_loc + new_img_name)
 
-new_image_size = 256 # Each image will be resized to (new_size, new_size, 3)
-output_folder_name = 'processed_dataset'
-process_dataset(new_image_size, output_folder_name)
-equalize_classes()
+#new_image_size = 256 # Each image will be resized to (new_size, new_size, 3)
+#output_folder_name = 'processed_dataset'
+#process_dataset(new_image_size, output_folder_name)
+#equalize_classes()
 
 

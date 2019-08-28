@@ -68,7 +68,8 @@ def multi_layer_perceptron():
 #Build the model
 model = multi_layer_perceptron()
 
-loc = 'multilayer_perceptron/'
+architecture = 'MLP_256_128_64_' # Change that to the architectures name
+loc = 'multilayer_perceptron/' # Change this to the name of your neural network e.g AlexNet.
 create_dir(loc)
 
 #Fit the model
@@ -78,7 +79,7 @@ history = model.fit(X_train, y_train,
                     batch_size = 50,
                     verbose = 2, 
                     shuffle = True, 
-                    callbacks = [ModelCheckpoint(loc + 'model.h5',
+                    callbacks = [ModelCheckpoint(loc + architecture + '_model.h5',
                                                  monitor='val_acc',
                                                  save_best_only = True)])
 
@@ -90,7 +91,8 @@ plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train', 'valid'], loc='upper left')
-plt.savefig(loc + 'MLP_256_128_64_acc.png')
+plt.savefig(loc + architecture + 'acc.png')
+plt.close()
 
 # summarize history for loss
 plt.plot(history.history['loss'])
@@ -99,7 +101,7 @@ plt.title('model loss')
 plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'valid'], loc='upper left')
-plt.savefig(loc + 'MLP_256_128_64_loss.png')
+plt.savefig(loc + architecture + 'loss.png')
 plt.close()
 
 scores = model.evaluate(X_test, y_test, verbose = 2)
