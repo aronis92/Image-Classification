@@ -1,4 +1,5 @@
 
 natural_images/*
+processed_dataset/*
 __pycache__/*
 test.py
