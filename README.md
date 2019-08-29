@@ -3,10 +3,10 @@
 
 | Model | Image Size | Epochs | Batch Size | Accuracy |
 |---|---|---|---|---|
-| LeNet | 256 | 70 | 64 | 94% |
-| AlexNet | 128 | 70 | 32 | 94% |
+| LeNet | 128 | 50 | 64 | 94% |
+| AlexNet | 128 | 50 | 64 | 96.5% |
 
 
 
-![model=Lenet&img_size=256&epochs=70&batch_size=64](https://github.com/DelphianCalamity/Image-Classification/raw/master/results/model=Lenet&img_size=256&epochs=70&batch_size=64.png)
-![model=AlexNet&img_size=128&epochs=70&batch_size=32](https://github.com/DelphianCalamity/Image-Classification/raw/master/results/model=AlexNet&img_size=128&epochs=70&batch_size=32.png)
+![model=LeNet&img_size=128&epochs=50&batch_size=64](https://github.com/DelphianCalamity/Image-Classification/raw/master/results/model=LeNet&img_size=128&epochs=50&batch_size=64_accuracy.png)
+![model=AlexNet&img_size=128&epochs=50&batch_size=64](https://github.com/DelphianCalamity/Image-Classification/raw/master/results/model=AlexNet&img_size=128&epochs=50&batch_size=64.png)

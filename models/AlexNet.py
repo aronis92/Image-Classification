@@ -3,7 +3,7 @@ from keras.layers import Dense, BatchNormalization, Dropout
 from keras.layers.convolutional import Conv2D
 from keras.layers.convolutional import MaxPooling2D
 from keras.layers import Flatten
-from keras.callbacks import EarlyStopping
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 
 def AlexNet(x_train, y_train, params):
@@ -70,6 +70,7 @@ def AlexNet(x_train, y_train, params):
         optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"]
     )
     # es = EarlyStopping(mode="min", verbose=1, patience=10)
+    mc = ModelCheckpoint("model.h5", monitor="val_acc", save_best_only=True)
     out = model.fit(
         x_train,
         y_train,
@@ -78,7 +79,7 @@ def AlexNet(x_train, y_train, params):
         batch_size=params["batch_size"],
         verbose=1,
         shuffle=True,
-        # callbacks=[es],
+        callbacks=[mc],
     )
 
     return out, model
