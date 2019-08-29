@@ -4,3 +4,4 @@ processed_dataset/*
 **/__pycache__/
 test.py
 model.h5
+*.h5

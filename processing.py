@@ -95,6 +95,7 @@ def equalize_classes():
                 number = '1000'
     
             new_img_name = class_name + number + '.jpg'
+            new_img = cv2.cvtColor(new_img, cv2.COLOR_BGR2RGB)
             new_img = Image.fromarray(new_img)
             new_img.save(image_loc + new_img_name)
 
