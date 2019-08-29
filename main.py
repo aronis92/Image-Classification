@@ -1,7 +1,7 @@
 from models.LeNet import LeNet
 from models.MLP import MLP
 from models.OurNet import OurNet
-from load_data import load_dataset, show_img
+from load_data import load_dataset
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
@@ -57,7 +57,7 @@ def plot_history(history, params):
 
 
 p = {
-    "model": "OurNet",  # for title
+    "model": "OurNet4",  # for title
     "img_size": 128,
     # "num_classes": NUM_CLASSES,
     # "freeze_layers": 0,
@@ -79,4 +79,4 @@ from keras.models import load_model
 
 model = load_model("model.h5")
 results = model.evaluate(x_test, y_test, batch_size = 50)
-
+print("test loss, test acc:", results)

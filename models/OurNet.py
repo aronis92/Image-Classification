@@ -28,7 +28,9 @@ def OurNet(x_train, y_train, params):
     
     model.add(Conv2D(filters=128,
                      activation = 'relu',
-                     kernel_size=(5,5)))#,padding = 'same'))
+                     kernel_size=(3,3)))#,padding = 'same'))
+    
+    model.add(MaxPooling2D(pool_size = (3, 3)))
     
     model.add(Conv2D(filters = 64,
                      activation = 'relu',
@@ -45,9 +47,9 @@ def OurNet(x_train, y_train, params):
     model.add(Flatten())
     model.add(Dense(256, activation = 'relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(128, activation = 'relu'))
+    model.add(Dense(256, activation = 'relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(64, activation = 'relu'))
+    model.add(Dense(256, activation = 'relu'))
     model.add(Dropout(0.5))
     model.add(Dense(8, activation = 'softmax'))
     model.summary()
