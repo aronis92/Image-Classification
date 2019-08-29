@@ -1,5 +1,6 @@
 from models.LeNet import LeNet
-from load_data import load_dataset
+from models.MLP import MLP
+from load_data import load_dataset, show_img
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
@@ -13,9 +14,12 @@ print("Images shape = ", images.shape, "\nLabels shape = ", labels.shape)
 num_classes = np.unique(labels).size
 print("Classes:", num_classes)
 images = images.astype(np.float32)
-labels = labels.astype(np.int32)
+labels = labels.astype(np.int8)
 images /= 255
 
+# Reshape data for MLP ONLY.
+# Comment out for convolutional networks.
+#images = images.reshape(8000, images.shape[1]*images.shape[2]*images.shape[3])
 
 label_encoder = LabelEncoder()
 Y = label_encoder.fit_transform(labels)
@@ -38,7 +42,7 @@ def plot_history(history, params):
     plt.ylabel("accuracy")
     plt.xlabel("epoch")
     plt.legend(["train", "test"], loc="upper left")
-    plt.savefig("./results/" + title + ".png")
+    plt.savefig("./results/" + title + "_accuracy.png")
     plt.show()
 
     plt.plot(history.history["loss"])
@@ -47,21 +51,23 @@ def plot_history(history, params):
     plt.ylabel("loss")
     plt.xlabel("epoch")
     plt.legend(["train", "test"], loc="upper left")
+    plt.savefig("./results/" + title + "_loss.png")
     plt.show()
 
 
 p = {
-    "model": "Lenet",  # for title
-    "img_size": 256,
+    "model": "MLP",  # for title
+    "img_size": 128,
     # "num_classes": NUM_CLASSES,
     # "freeze_layers": 0,
-    "epochs": 70,
-    "batch_size": 64,
+    "epochs": 30,
+    "batch_size": 50,
 }
 
+history, model = MLP(x_train, y_train, p)
+#history, model = LeNet(x_train, y_train, p)
 
-history, model = LeNet(x_train, y_train, p)
 plot_history(history, p)
 
-results = model.evaluate(x_test, y_test, batch_size=64)
+results = model.evaluate(x_test, y_test, batch_size=50)
 print("test loss, test acc:", results)
