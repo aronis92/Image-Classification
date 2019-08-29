@@ -1,5 +1,6 @@
 from models.LeNet import LeNet
 from models.MLP import MLP
+from models.OurNet import OurNet
 from load_data import load_dataset, show_img
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -26,7 +27,7 @@ Y = label_encoder.fit_transform(labels)
 Y = to_categorical(Y, num_classes)
 
 # Data split
-x_train, x_test, y_train, y_test = train_test_split(images, Y, test_size=0.1)
+x_train, x_test, y_train, y_test = train_test_split(images, Y, test_size=0.1, random_state=42)
 
 print("x_train shape = ", x_train.shape)
 print("y_train shape = ", y_train.shape)
@@ -56,18 +57,26 @@ def plot_history(history, params):
 
 
 p = {
-    "model": "MLP",  # for title
+    "model": "OurNet",  # for title
     "img_size": 128,
     # "num_classes": NUM_CLASSES,
     # "freeze_layers": 0,
-    "epochs": 30,
+    "epochs": 20,
     "batch_size": 50,
 }
 
-history, model = MLP(x_train, y_train, p)
+#history, model = MLP(x_train, y_train, p)
 #history, model = LeNet(x_train, y_train, p)
+history, model = OurNet(x_train, y_train, p)
 
 plot_history(history, p)
 
-results = model.evaluate(x_test, y_test, batch_size=50)
+results = model.evaluate(x_test, y_test, batch_size = 50)
 print("test loss, test acc:", results)
+
+
+from keras.models import load_model
+
+model = load_model("model.h5")
+results = model.evaluate(x_test, y_test, batch_size = 50)
+
