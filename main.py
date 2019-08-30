@@ -67,7 +67,11 @@ p = {
 
 #history, model = MLP(x_train, y_train, p)
 #history, model = LeNet(x_train, y_train, p)
-history, model = OurNet(x_train, y_train, p)
+#history, model = AlexNet(x_train, y_train, p)
+#history, model = InceptionNet(x_train, y_train, p)
+history, model = VGG(x_train, y_train, p)
+#history, model = ResNet(x_train, y_train, p)
+# history, model = OurNet(x_train, y_train, p)
 
 plot_history(history, p)
 
