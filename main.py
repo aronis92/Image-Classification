@@ -1,5 +1,6 @@
 from models.LeNet import LeNet
 from models.MLP import MLP
+from models.VGG import VGG
 from models.OurNet import OurNet
 from load_data import load_dataset
 import numpy as np

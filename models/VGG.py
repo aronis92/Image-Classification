@@ -1,3 +1,4 @@
+import keras
 from keras.models import Sequential
 from keras.layers import Dense, BatchNormalization, Dropout
 from keras.layers.convolutional import Conv2D
@@ -9,7 +10,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 def VGG(x_train, y_train, params):
 
 
-    input_shape = X_train.shape
+    input_shape = (128, 128, 3)
 
     #Instantiate an empty model
     model = Sequential([
@@ -34,7 +35,7 @@ def VGG(x_train, y_train, params):
     Flatten(),
     Dense(4096, activation='relu'),
     Dense(4096, activation='relu'),
-    Dense(1000, activation='softmax')
+    Dense(8, activation='softmax')
     ])
 
     model.summary()
