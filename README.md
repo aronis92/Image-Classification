@@ -1,11 +1,17 @@
 # Image-Classification
 
 
-| Model | Image Size | Epochs | Batch Size | Accuracy |
-|---|---|---|---|---|
-| LeNet | 128 | 50 | 64 | 94% |
-| AlexNet | 128 | 50 | 64 | 96.5% |
-| InceptionNet | 128 | 50 | 32 | 98.8% |
+| Model | Image Size | Epochs | Batch Size | Validation Accuracy | Test Accuracy |
+|---|---|---|---|---|---|
+| LeNet | 128 | 50 | 64 | - | 94% |
+| AlexNet | 128 | 50 | 64 | - | 96.5% |
+| InceptionNet | 128 | 50 | 32 | - | 98.8% |
+| OurNet1 | 128 | 10 | 50 | 86.81% | 83.75% |
+| OurNet2 | 128 | 20 | 50 | 94.31% | 93.75% |  
+| OurNet3 | 128 | 20 | 50 | 92.78% | 94.25% |  
+| OurNet4 | 128 | 30 | 50 | 96.11% | 93.88% |  
+| OurNet5 | 128 | 30 | 20 | 95% | 93.87% |
+| OurNet6 | 128 | 30 | 20 | 92.92% | 93.75% |  
 
 
 
