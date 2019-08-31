@@ -57,12 +57,12 @@ def plot_history(history, params):
 
 
 p = {
-    "model": "OurNet4",  # for title
+    "model": "OurNet6",  # for title
     "img_size": 128,
     # "num_classes": NUM_CLASSES,
     # "freeze_layers": 0,
-    "epochs": 20,
-    "batch_size": 50,
+    "epochs": 30,
+    "batch_size": 20,
 }
 
 #history, model = MLP(x_train, y_train, p)
@@ -71,12 +71,12 @@ history, model = OurNet(x_train, y_train, p)
 
 plot_history(history, p)
 
-results = model.evaluate(x_test, y_test, batch_size = 50)
+results = model.evaluate(x_test, y_test, batch_size = 20)
 print("test loss, test acc:", results)
 
 
 from keras.models import load_model
 
 model = load_model("model.h5")
-results = model.evaluate(x_test, y_test, batch_size = 50)
+results = model.evaluate(x_test, y_test, batch_size = 20)
 print("test loss, test acc:", results)
