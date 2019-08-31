@@ -3,6 +3,7 @@
 
 | Model | Image Size | Epochs | Batch Size | Validation Accuracy | Test Accuracy |
 |---|---|---|---|---|---|
+| MLP | 128 | 10 | 50 | 81.94% | 80.25% |
 | LeNet | 128 | 50 | 64 | - | 94% |
 | AlexNet | 128 | 50 | 64 | - | 96.5% |
 | InceptionNet | 128 | 50 | 32 | - | 98.8% |
