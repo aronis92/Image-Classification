@@ -1,5 +1,6 @@
 from models.LeNet import LeNet
 from models.MLP import MLP
+from models.VGG import VGG
 from models.OurNet import OurNet
 from load_data import load_dataset
 import numpy as np
@@ -67,7 +68,11 @@ p = {
 
 #history, model = MLP(x_train, y_train, p)
 #history, model = LeNet(x_train, y_train, p)
-history, model = OurNet(x_train, y_train, p)
+#history, model = AlexNet(x_train, y_train, p)
+#history, model = InceptionNet(x_train, y_train, p)
+history, model = VGG(x_train, y_train, p)
+#history, model = ResNet(x_train, y_train, p)
+# history, model = OurNet(x_train, y_train, p)
 
 plot_history(history, p)
 
