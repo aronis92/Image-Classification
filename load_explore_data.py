@@ -11,9 +11,15 @@ for folder_name in folders:
     class_size = len(os.listdir(loc + folder_name))
     class_count.append(class_size)
     
+min_count = min(class_count)
+max_count = max(class_count)
+print('Minimum Class Count : ', min_count)
+print('Maximum Class Count : ', max_count)
+    
 cl = [i for i in range(1, n_classes + 1)]
 plt.bar(cl, height=class_count)
 plt.show()
+#plt.savefig('class_count.png')
 
 max_h = 0
 max_w = 0
