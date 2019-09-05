@@ -58,7 +58,7 @@ def plot_history(history, params):
 
 
 p = {
-    "model": "OurNet6",  # for title
+    "model": "OurNet7",  # for title
     "img_size": 128,
     # "num_classes": NUM_CLASSES,
     # "freeze_layers": 0,
@@ -70,9 +70,9 @@ p = {
 #history, model = LeNet(x_train, y_train, p)
 #history, model = AlexNet(x_train, y_train, p)
 #history, model = InceptionNet(x_train, y_train, p)
-history, model = VGG(x_train, y_train, p)
+#history, model = VGG(x_train, y_train, p)
 #history, model = ResNet(x_train, y_train, p)
-# history, model = OurNet(x_train, y_train, p)
+history, model = OurNet(x_train, y_train, p)
 
 plot_history(history, p)
 
