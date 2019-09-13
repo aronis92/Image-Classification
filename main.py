@@ -76,7 +76,7 @@ history, model = OurNet(x_train, y_train, p)
 
 plot_history(history, p)
 
-results = model.evaluate(x_test, y_test, batch_size = 20)
+results = model.evaluate(x_test, y_test, batch_size=20)
 print("test loss, test acc:", results)
 
 

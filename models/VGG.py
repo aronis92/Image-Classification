@@ -9,36 +9,35 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 def VGG(x_train, y_train, params):
 
+    model = Sequential()
+    model.add(Conv2D(64, (3, 3), input_shape=(128, 128, 3), padding='same', activation='relu'))
+    # model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    model.add(Conv2D(128, (3, 3), activation='relu', padding='same'))
+    # model.add(Conv2D(128, (3, 3), activation='relu', padding='same'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    model.add(Conv2D(256, (3, 3), activation='relu', padding='same'))
+    # model.add(Conv2D(256, (3, 3), activation='relu', padding='same'))
+    # model.add(Conv2D(256, (3, 3), activation='relu', padding='same'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    model.add(Conv2D(512, (3, 3), activation='relu', padding='same'))
+    # model.add(Conv2D(512, (3, 3), activation='relu', padding='same'))
+    # model.add(Conv2D(512, (3, 3), activation='relu', padding='same'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    # model.add(Conv2D(512, (3, 3), activation='relu', padding='same'))
+    # model.add(Conv2D(512, (3, 3), activation='relu', padding='same'))
+    # model.add(Conv2D(512, (3, 3), activation='relu', padding='same'))
+    # model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
-    input_shape = (128, 128, 3)
-
-    #Instantiate an empty model
-    model = Sequential([
-    Conv2D(64, (3, 3), input_shape=input_shape, padding='same', activation='relu'),
-    Conv2D(64, (3, 3), activation='relu', padding='same'),
-    MaxPooling2D(pool_size=(2, 2), strides=(2, 2)),
-    Conv2D(128, (3, 3), activation='relu', padding='same'),
-    Conv2D(128, (3, 3), activation='relu', padding='same',),
-    MaxPooling2D(pool_size=(2, 2), strides=(2, 2)),
-    Conv2D(256, (3, 3), activation='relu', padding='same',),
-    Conv2D(256, (3, 3), activation='relu', padding='same',),
-    Conv2D(256, (3, 3), activation='relu', padding='same',),
-    MaxPooling2D(pool_size=(2, 2), strides=(2, 2)),
-    Conv2D(512, (3, 3), activation='relu', padding='same',),
-    Conv2D(512, (3, 3), activation='relu', padding='same',),
-    Conv2D(512, (3, 3), activation='relu', padding='same',),
-    MaxPooling2D(pool_size=(2, 2), strides=(2, 2)),
-    Conv2D(512, (3, 3), activation='relu', padding='same',),
-    Conv2D(512, (3, 3), activation='relu', padding='same',),
-    Conv2D(512, (3, 3), activation='relu', padding='same',),
-    MaxPooling2D(pool_size=(2, 2), strides=(2, 2)),
-    Flatten(),
-    Dense(4096, activation='relu'),
-    Dense(4096, activation='relu'),
-    Dense(8, activation='softmax')
-    ])
-
+    model.add(Flatten())
+    model.add(Dense(4096, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(4096, activation='relu'))
+    model.add(Dense(8, activation='softmax'))
     model.summary()
+
+    # sgd = SGD(lr=0.1, decay=1e-6, momentum =0.9, nesterov=True)
+    # model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
     # Compile the model
     model.compile(loss=keras.losses.categorical_crossentropy, optimizer='adam', metrics=["accuracy"])
@@ -57,3 +56,4 @@ def VGG(x_train, y_train, params):
     )
 
     return out, model
+
