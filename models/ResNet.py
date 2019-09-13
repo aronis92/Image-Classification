@@ -10,24 +10,23 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 def ResNet50(x_train, y_train, params):
 
-    input_shape = (128, 128, 3) 
+    input_shape = (128, 128, 3)
     classes = 8
 
     # Define the input as a tensor with shape input_shape
     X_input = Input(input_shape)
 
-
     # Zero-Padding
     X = ZeroPadding2D((3, 3))(X_input)
 
     # Stage 1
-    X = Conv2D(64, (7, 7), strides = (2, 2), name = 'conv1', kernel_initializer = glorot_uniform(seed=0))(X)
+    X = Conv2D(64, (7, 7), strides=(2, 2), name = 'conv1', kernel_initializer=glorot_uniform(seed=0))(X)
     X = BatchNormalization(axis = 3, name = 'bn_conv1')(X)
     X = Activation('relu')(X)
     X = MaxPooling2D((3, 3), strides=(2, 2))(X)
 
     # Stage 2
-    X = convolutional_block(X, f = 3, filters = [64, 64, 256], stage = 2, block='a', s = 1)
+    X = convolutional_block(X, f=3, filters = [64, 64, 256], stage = 2, block='a', s = 1)
     X = identity_block(X, 3, [64, 64, 256], stage=2, block='b')
     X = identity_block(X, 3, [64, 64, 256], stage=2, block='c')
 
@@ -51,17 +50,16 @@ def ResNet50(x_train, y_train, params):
     X = identity_block(X, 3, [512, 512, 2048], stage=5, block='c')
 
     # AVGPOOL
-    X = AveragePooling2D(pool_size=(2,2), padding='same')(X)
+    X = AveragePooling2D(pool_size=(2, 2), padding='same')(X)
 
     # Output layer
     X = Flatten()(X)
-    X = Dense(classes, activation='softmax', name='fc' + str(classes), kernel_initializer = glorot_uniform(seed=0))(X)
+    X = Dense(classes, activation='softmax', name='fc' + str(classes), kernel_initializer=glorot_uniform(seed=0))(X)
 
     # Create model
-    model = Model(inputs = X_input, outputs = X, name='ResNet50')
+    model = Model(inputs=X_input, outputs=X, name='ResNet50')
 
     model.summary()
-
 
     # Compile the model
     model.compile(loss=keras.losses.categorical_crossentropy, optimizer='adam', metrics=["accuracy"])

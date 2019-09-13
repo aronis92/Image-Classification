@@ -1,6 +1,7 @@
 from models.LeNet import LeNet
 from models.MLP import MLP
 from models.VGG import VGG
+from models.ResNet import ResNet50
 from models.OurNet import OurNet
 from load_data import load_dataset
 import numpy as np
@@ -70,9 +71,9 @@ p = {
 #history, model = LeNet(x_train, y_train, p)
 #history, model = AlexNet(x_train, y_train, p)
 #history, model = InceptionNet(x_train, y_train, p)
-#history, model = VGG(x_train, y_train, p)
-#history, model = ResNet(x_train, y_train, p)
-history, model = OurNet(x_train, y_train, p)
+history, model = VGG(x_train, y_train, p)
+history, model = ResNet50(x_train, y_train, p)
+# history, model = OurNet(x_train, y_train, p)
 
 plot_history(history, p)
 
@@ -80,8 +81,8 @@ results = model.evaluate(x_test, y_test, batch_size=20)
 print("test loss, test acc:", results)
 
 
-from keras.models import load_model
-
-model = load_model("model.h5")
-results = model.evaluate(x_test, y_test, batch_size = 20)
-print("test loss, test acc:", results)
+# from keras.models import load_model
+# 
+# model = load_model("model.h5")
+# results = model.evaluate(x_test, y_test, batch_size = 20)
+# print("test loss, test acc:", results)
