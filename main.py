@@ -59,11 +59,11 @@ def plot_history(history, params):
 
 
 p = {
-    "model": "OurNet7",  # for title
+    "model": "ResNet",  # for title
     "img_size": 128,
     # "num_classes": NUM_CLASSES,
     # "freeze_layers": 0,
-    "epochs": 30,
+    "epochs": 1,
     "batch_size": 20,
 }
 
@@ -71,7 +71,7 @@ p = {
 #history, model = LeNet(x_train, y_train, p)
 #history, model = AlexNet(x_train, y_train, p)
 #history, model = InceptionNet(x_train, y_train, p)
-history, model = VGG(x_train, y_train, p)
+#history, model = VGG(x_train, y_train, p)
 history, model = ResNet50(x_train, y_train, p)
 # history, model = OurNet(x_train, y_train, p)
 
@@ -81,8 +81,7 @@ results = model.evaluate(x_test, y_test, batch_size=20)
 print("test loss, test acc:", results)
 
 
-# from keras.models import load_model
-# 
-# model = load_model("model.h5")
-# results = model.evaluate(x_test, y_test, batch_size = 20)
-# print("test loss, test acc:", results)
+from keras.models import load_model
+model = load_model("model.h5")
+results = model.evaluate(x_test, y_test, batch_size = 20)
+print("test loss, test acc:", results)

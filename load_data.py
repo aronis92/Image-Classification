@@ -2,7 +2,7 @@ import numpy as np
 import random
 import cv2
 import os
-from IPython.display import display
+#from IPython.display import display
 from PIL import Image, ImageDraw
 
 def load_dataset():
