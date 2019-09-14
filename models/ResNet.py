@@ -1,147 +1,45 @@
-def conv_block(input_tensor, kernel_size, filters, strides=(2, 2)):
+from resnets_utils import *
 
-    filters1, filters2, filters3 = filters
+from keras.models import load_model
+from sklearn.datasets import load_files   
+from keras.utils import np_utils
+from glob import glob
+from keras import applications
+from keras.preprocessing.image import ImageDataGenerator 
+from keras import optimizers
+from keras.models import Sequential,Model,load_model
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPool2D,GlobalAveragePooling2D
+from keras.callbacks import TensorBoard,ReduceLROnPlateau,ModelCheckpoint
+from keras.optimizers import SGD, Adam
 
-    if backend.image_data_format() == 'channels_last':
-        bn_axis = 3
-    else:
-        bn_axis = 1
+def ResNet(x_train, y_train, params):
 
-    x = layers.Conv2D(filters1, (1, 1), use_bias=False,
-                      kernel_initializer='he_normal',
-                      kernel_regularizer=regularizers.l2(L2_WEIGHT_DECAY))(input_tensor)
-    x = layers.BatchNormalization(axis=bn_axis,
-                                  momentum=BATCH_NORM_DECAY,
-                                  epsilon=BATCH_NORM_EPSILON)(x)
-    x = layers.Activation('relu')(x)
-    x = layers.Conv2D(filters2, kernel_size, strides=strides, padding='same',
-                      use_bias=False, kernel_initializer='he_normal',
-                      kernel_regularizer=regularizers.l2(L2_WEIGHT_DECAY))(x)
-    x = layers.BatchNormalization(axis=bn_axis,
-                                  momentum=BATCH_NORM_DECAY,
-                                  epsilon=BATCH_NORM_EPSILON)(x)
-    x = layers.Activation('relu')(x)
-
-    x = layers.Conv2D(filters3, (1, 1), use_bias=False,
-                      kernel_initializer='he_normal',
-                      kernel_regularizer=regularizers.l2(L2_WEIGHT_DECAY))(x)
-    x = layers.BatchNormalization(axis=bn_axis,
-                                  momentum=BATCH_NORM_DECAY,
-                                  epsilon=BATCH_NORM_EPSILON)(x)
-
-    shortcut = layers.Conv2D(filters3, (1, 1), strides=strides, use_bias=False,
-                             kernel_initializer='he_normal',
-                             kernel_regularizer=regularizers.l2(L2_WEIGHT_DECAY))(input_tensor)
-    shortcut = layers.BatchNormalization(axis=bn_axis,
-                                         momentum=BATCH_NORM_DECAY,
-                                         epsilon=BATCH_NORM_EPSILON)(shortcut)
-
-    x = layers.add([x, shortcut])
-    x = layers.Activation('relu')(x)
-    return x
-
-
-
-def identity_block(input_tensor, kernel_size, filters):
-
-    filters1, filters2, filters3 = filters
-    if backend.image_data_format() == 'channels_last':
-        bn_axis = 3
-    else:
-        bn_axis = 1
-
-    x = layers.Conv2D(filters1, (1, 1), use_bias=False,
-                      kernel_initializer='he_normal',
-                      kernel_regularizer=regularizers.l2(L2_WEIGHT_DECAY))(input_tensor)
-
-    x = layers.BatchNormalization(axis=bn_axis,
-                                  momentum=BATCH_NORM_DECAY,
-                                  epsilon=BATCH_NORM_EPSILON)(x)
-    x = layers.Activation('relu')(x)
-
-    x = layers.Conv2D(filters2, kernel_size,
-                      padding='same', use_bias=False,
-                      kernel_initializer='he_normal',
-                      kernel_regularizer=regularizers.l2(L2_WEIGHT_DECAY))(x)
-
-    x = layers.BatchNormalization(axis=bn_axis,
-                                  momentum=BATCH_NORM_DECAY,
-                                  epsilon=BATCH_NORM_EPSILON)(x)
-
-    x = layers.Activation('relu')(x)
-
-    x = layers.Conv2D(filters3, (1, 1), use_bias=False,
-                      kernel_initializer='he_normal',
-                      kernel_regularizer=regularizers.l2(L2_WEIGHT_DECAY))(x)
-
-    x = layers.BatchNormalization(axis=bn_axis,
-                                  momentum=BATCH_NORM_DECAY,
-                                  epsilon=BATCH_NORM_EPSILON)(x)
-
-    x = layers.add([x, input_tensor])
-    x = layers.Activation('relu')(x)
-    return x
-
-def resnet50(num_classes, input_shape):
-
-    input_shape = (128, 128, 3)
+    img_height,img_width = 128,128 
     num_classes = 8
-    img_input = layers.Input(shape=input_shape)
 
-    if backend.image_data_format() == 'channels_first':
-        x = layers.Lambda(lambda x: backend.permute_dimensions(x, (0, 3, 1, 2)),
-                          name='transpose')(img_input)
-        bn_axis = 1
-    else:  # channels_last
-        x = img_input
-        bn_axis = 3
+    base_model = applications.resnet50.ResNet50(weights=None, include_top=False, input_shape=(img_height, img_width, 3))
 
-    # Conv1 (7x7,64,stride=2)
-    x = layers.ZeroPadding2D(padding=(3, 3))(x)
+    x = base_model.output
+    x = GlobalAveragePooling2D()(x)
+    x = Dropout(0.7)(x)
+    predictions = Dense(num_classes, activation= 'softmax')(x)
+    model = Model(inputs=base_model.input, outputs=predictions)
 
-    x = layers.Conv2D(64, (7, 7),
-                      strides=(2, 2),
-                      padding='valid', use_bias=False,
-                      kernel_initializer='he_normal',
-                      kernel_regularizer=regularizers.l2(L2_WEIGHT_DECAY))(x)
-    x = layers.BatchNormalization(axis=bn_axis,
-                                  momentum=BATCH_NORM_DECAY,
-                                  epsilon=BATCH_NORM_EPSILON)(x)
-    x = layers.Activation('relu')(x)
-    x = layers.ZeroPadding2D(padding=(1, 1))(x)
+    # sgd = SGD(lr=lrate, momentum=0.9, decay=decay, nesterov=False)
+    adam = Adam(lr=0.0001)
+    model.compile(optimizer= adam, loss='categorical_crossentropy', metrics=['accuracy'])
 
-    # 3x3 max pool,stride=2
-    x = layers.MaxPooling2D((3, 3), strides=(2, 2))(x)
+    mc = ModelCheckpoint("model.h5", monitor="val_acc", save_best_only=True)
+    out = model.fit(
+        x_train,
+        y_train,
+        validation_split=0.1,
+        epochs=params["epochs"],
+        batch_size=params["batch_size"],
+        verbose=1,
+        shuffle=True,
+        callbacks=[mc],
+    )
 
-    # Conv2_x
-    x = conv_block(x, 3, [64, 64, 256], strides=(1, 1))
-    x = identity_block(x, 3, [64, 64, 256])
-    x = identity_block(x, 3, [64, 64, 256])
+    return out, model
 
-    # Conv3_x
-    x = conv_block(x, 3, [128, 128, 512])
-    x = identity_block(x, 3, [128, 128, 512])
-    x = identity_block(x, 3, [128, 128, 512])
-    x = identity_block(x, 3, [128, 128, 512])
-
-    # Conv4_x
-    x = conv_block(x, 3, [256, 256, 1024])
-    x = identity_block(x, 3, [256, 256, 1024])
-    x = identity_block(x, 3, [256, 256, 1024])
-    x = identity_block(x, 3, [256, 256, 1024])
-    x = identity_block(x, 3, [256, 256, 1024])
-    x = identity_block(x, 3, [256, 256, 1024])
-
-    x = conv_block(x, 3, [512, 512, 2048])
-    x = identity_block(x, 3, [512, 512, 2048])
-    x = identity_block(x, 3, [512, 512, 2048])
-
-    # average pool, 1000-d fc, softmax
-    x = layers.GlobalAveragePooling2D()(x)
-    x = layers.Dense(
-        num_classes, activation='softmax',
-        kernel_regularizer=regularizers.l2(L2_WEIGHT_DECAY),
-        bias_regularizer=regularizers.l2(L2_WEIGHT_DECAY))(x)
-
-    # Create model
-    return models.Model(img_input, x, name='resnet50')
