@@ -1,18 +1,20 @@
 from models.LeNet import LeNet
 from models.MLP import MLP
 from models.VGG import VGG
-from models.ResNet import ResNet50
+from models.ResNet import ResNet
 from models.OurNet import OurNet
 from load_data import load_dataset
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from keras.utils.np_utils import to_categorical
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
 images, labels = load_dataset()
-print("Images shape = ", images.shape, "\nLabels shape = ", labels.shape)
+print("Images shape = ", images.shape, "\n Labels shape = ", labels.shape)
 
 num_classes = np.unique(labels).size
 print("Classes:", num_classes)
@@ -46,7 +48,7 @@ def plot_history(history, params):
     plt.xlabel("epoch")
     plt.legend(["train", "test"], loc="upper left")
     plt.savefig("./results/" + title + "_accuracy.png")
-    plt.show()
+#    plt.show()
 
     plt.plot(history.history["loss"])
     plt.plot(history.history["val_loss"])
@@ -55,7 +57,7 @@ def plot_history(history, params):
     plt.xlabel("epoch")
     plt.legend(["train", "test"], loc="upper left")
     plt.savefig("./results/" + title + "_loss.png")
-    plt.show()
+#    plt.show()
 
 
 p = {
@@ -63,7 +65,7 @@ p = {
     "img_size": 128,
     # "num_classes": NUM_CLASSES,
     # "freeze_layers": 0,
-    "epochs": 1,
+    "epochs": 20,
     "batch_size": 20,
 }
 
@@ -72,7 +74,7 @@ p = {
 #history, model = AlexNet(x_train, y_train, p)
 #history, model = InceptionNet(x_train, y_train, p)
 #history, model = VGG(x_train, y_train, p)
-history, model = ResNet50(x_train, y_train, p)
+history, model = ResNet(x_train, y_train, p)
 # history, model = OurNet(x_train, y_train, p)
 
 plot_history(history, p)

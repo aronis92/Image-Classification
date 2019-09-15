@@ -1,11 +1,9 @@
-from resnets_utils import *
-
 from keras.models import load_model
-from sklearn.datasets import load_files   
+from sklearn.datasets import load_files
 from keras.utils import np_utils
 from glob import glob
 from keras import applications
-from keras.preprocessing.image import ImageDataGenerator 
+from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
 from keras.models import Sequential,Model,load_model
 from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPool2D,GlobalAveragePooling2D
@@ -14,7 +12,7 @@ from keras.optimizers import SGD, Adam
 
 def ResNet(x_train, y_train, params):
 
-    img_height,img_width = 128,128 
+    img_height,img_width = 128,128
     num_classes = 8
 
     base_model = applications.resnet50.ResNet50(weights=None, include_top=False, input_shape=(img_height, img_width, 3))
